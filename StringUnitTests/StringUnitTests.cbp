@@ -26,6 +26,7 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="String.h" />
 		<Unit filename="StringTest.c">
 			<Option compilerVar="CC" />
 		</Unit>

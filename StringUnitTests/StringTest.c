@@ -532,7 +532,8 @@ void test_string_copy_range(void)
 
 void test_string_fgets(void)
 {
-    string_t* test_str1 = string_init();
+    string_t* test_str1         =       string_init();
+    FILE* test_input_file       =       NULL;
     string_copy_cptr_sptr(test_str1, "This is a test string literal.");
 
     string_fgets(test_str1, -1, stdin);
@@ -549,7 +550,7 @@ void test_string_fgets(void)
 
     string_destroy(test_str1);
     test_str1 = string_cust_init(10);
-    FILE* test_input_file = fopen("computing_bucket_list.txt", "r");
+    test_input_file = fopen("computing_bucket_list.txt", "r");
     if (test_input_file != NULL)
     {
         string_fgets(test_str1, 15, test_input_file);

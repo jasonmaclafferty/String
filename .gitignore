@@ -1,0 +1,9 @@
+# ignore binaries and object files (build output)
+*./libString/bin
+*./libString/obj
+*./StringUnitTests/bin
+*./StringUnitTests/obj
+
+# ignore backup files
+*.bak
+*.save

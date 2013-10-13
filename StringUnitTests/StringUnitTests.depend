@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1379308033 source:/home/Jason/Github/C/String/StringUnitTests/main.c
+	<stdio.h>
+	<stdlib.h>
+	"StringTest.h"
+	"String.h"
+
+1379884487 /home/Jason/Github/C/String/StringUnitTests/StringTest.h
+
+1379886462 /home/Jason/Github/C/String/StringUnitTests/String.h
+	<stdio.h>
+

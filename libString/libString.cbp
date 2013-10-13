@@ -2,7 +2,7 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="libString" />
+		<Option title="String" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
@@ -19,6 +19,7 @@
 					<Add option="-Wfatal-errors" />
 					<Add option="-Wextra" />
 					<Add option="-g" />
+					<Add option="-fPIC" />
 				</Compiler>
 			</Target>
 			<Target title="Release">

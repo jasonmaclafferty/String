@@ -1012,7 +1012,7 @@ void string_set_range2(string_t* dest, string_t* replacement_str, int start_pos,
  *
  * \param dest string_t* A pointer to the string object in which to do the replacements.
  * \param str_to_replace char* The C string to replace in the string object pointed to by dest.
- * \param replacement_text char* The C string use as a replacement for the first found occurrence of str_to_replace.
+ * \param replacement_text char* The C string to use as a replacement for the first found occurrence of str_to_replace.
  * \return int A Boolean value, 0 for False and 1 for True, indicating whether or not a replacement was made.
  *
  * Subsequent, identical calls to the function with the same parameters will replace the next occurrence of
@@ -1040,19 +1040,21 @@ int string_replace(string_t* dest, char* str_to_replace, char* replacement_text)
                         if (temp != NULL)
                         {
                             /* make room to insert the longer phrase */
-                            for (dest_pos = dest->length - 1; dest_pos > found_at_pos + strlen(str_to_replace) + 1; dest_pos--)
+                            for (dest_pos = dest->length - 1; dest_pos > found_at_pos + (int)strlen(str_to_replace) + 1; dest_pos--)
                                 dest->char_array[dest_pos + size_diff] = dest->char_array[dest_pos];
 
                             string_set_range(dest, replacement_text, found_at_pos, strlen(replacement_text) - 1);
+                            bool_replaced = 1;
                         }
                     }
                     else
                     {
                         /* make room to insert the longer phrase */
-                        for (dest_pos = dest->length - 1; dest_pos > found_at_pos + strlen(str_to_replace) + 1; dest_pos--)
+                        for (dest_pos = dest->length - 1; dest_pos > found_at_pos + (int)strlen(str_to_replace) + 1; dest_pos--)
                             dest->char_array[dest_pos + size_diff] = dest->char_array[dest_pos];
 
                         string_set_range(dest, replacement_text, found_at_pos, strlen(replacement_text) - 1);
+                        bool_replaced = 1;
                     }
                 }
                 else if (strlen(replacement_text) < strlen(str_to_replace))
@@ -1064,14 +1066,18 @@ int string_replace(string_t* dest, char* str_to_replace, char* replacement_text)
                         dest->char_array[dest_pos] = dest->char_array[dest_pos + size_diff];
 
                     string_set_range(dest, replacement_text, found_at_pos, strlen(replacement_text) - 1);
+                    bool_replaced = 1;
                 }
                 else
                 {
                     string_set_range(dest, replacement_text, found_at_pos, strlen(replacement_text) - 1);
+                    bool_replaced = 1;
                 }
             }
         }
     }
+
+    return bool_replaced;
 }
 
 /** \brief Replaces the first occurrence of str_to_replace with replacement_text in the string object pointed to by dest.
