@@ -7,7 +7,7 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="bin/Debug/libString" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Debug/String" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Debug/" />
 				<Option type="3" />
 				<Option compiler="gcc" />
@@ -18,12 +18,13 @@
 					<Add option="-pedantic" />
 					<Add option="-Wfatal-errors" />
 					<Add option="-Wextra" />
+					<Add option="-Wall" />
 					<Add option="-g" />
-					<Add option="-fPIC" />
+					<Add option="-fPIC -o libString.so" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
-				<Option output="bin/Release/libString" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Release/String" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Release/" />
 				<Option type="3" />
 				<Option compiler="gcc" />
@@ -33,7 +34,10 @@
 					<Add option="-O2" />
 					<Add option="-pedantic-errors" />
 					<Add option="-pedantic" />
+					<Add option="-Wfatal-errors" />
 					<Add option="-Wextra" />
+					<Add option="-Wall" />
+					<Add option="-o libString.so -fPIC" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -41,7 +45,12 @@
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-pedantic-errors" />
+			<Add option="-pedantic" />
+			<Add option="-Wextra" />
 			<Add option="-Wall" />
+			<Add option="-g" />
+			<Add option="-W" />
 		</Compiler>
 		<Unit filename="String.c">
 			<Option compilerVar="CC" />

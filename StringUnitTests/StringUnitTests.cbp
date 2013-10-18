@@ -16,15 +16,22 @@
 					<Add option="-pedantic" />
 					<Add option="-Wfatal-errors" />
 					<Add option="-Wextra" />
+					<Add option="-Wall" />
 					<Add option="-g" />
 				</Compiler>
 				<Linker>
+					<Add library="../libString/bin/Debug/libString.so" />
 					<Add directory="../libString/bin/Debug" />
 				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-pedantic-errors" />
+			<Add option="-pedantic" />
+			<Add option="-Wfatal-errors" />
+			<Add option="-Wextra" />
 			<Add option="-Wall" />
+			<Add option="-g" />
 		</Compiler>
 		<Unit filename="String.h" />
 		<Unit filename="StringTest.c">

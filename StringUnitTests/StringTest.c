@@ -27,6 +27,7 @@ void start_testing(void)
     test_string_find_cstr();
     test_string_in();
     test_string_set_range();
+    test_string_replace();
 }
 
 void test_string_equal(void)
@@ -603,10 +604,10 @@ void test_string_set_range(void)
     string_copy_cptr_sptr(test_str, "This is a string for testing.");
 
     string_set_range(test_str, "phrase", 9, 14);
-    assert(string_equal_cstring(test_str, "This is a phrase for testing."));
+    assert(string_equal_cstring(test_str, "This is aphraseg for testing."));
 
     string_set_range(test_str, NULL, 1, 5);
-    assert(string_equal_cstring(test_str, "This is a phrase for testing."));
+    assert(string_equal_cstring(test_str, "This is aphraseg for testing."));
 
     string_set_range(NULL, "jason", 5, 20); /* This should not crash. */
     string_set_range(NULL, NULL, 0, 5); /* " */
@@ -615,23 +616,23 @@ void test_string_set_range(void)
     assert(string_equal_cstring(test_str2, ""));
 
     string_set_range(test_str, "A", -1, 5); /* Indexes cannot be negative. */
-    assert(string_equal_cstring(test_str, "This is a phrase for testing."));
+    assert(string_equal_cstring(test_str, "This is aphraseg for testing."));
 
     string_set_range(test_str, "an expression", 5, 0); /* The start index must be less than the end index. */
-    assert(string_equal_cstring(test_str, "This is a phrase for testing."));
+    assert(string_equal_cstring(test_str, "This is aphraseg for testing."));
 
     string_set_range(test_str, "something here", 0, 0); /* " */
-    assert(string_equal_cstring(test_str, "This is a phrase for testing."));
+    assert(string_equal_cstring(test_str, "This is aphraseg for testing."));
 
-    /* If strlen(replacement string) > (end index - start index) + 1 then only (start index - end index)
+    /* If strlen(replacement string) > (end index - start index) + 1 then only (end index - start index)
     + 1 characters are replaced in the destination string. */
     string_set_range(test_str, "to use for", 17, 19);
-    assert(string_equal_cstring(test_str, "This is a phrase to  testing."));
+    assert(string_equal_cstring(test_str, "This is aphraseg to  testing."));
 
     /* If strlen(replacement string) <= (end index - start index) + 1, then only len(replacement string) number of
     characters will be replaced in the destination string. */
     string_set_range(test_str, "ab", 0, 15);
-    assert(string_equal_cstring(test_str, "abis is a phrase to  testing."));
+    assert(string_equal_cstring(test_str, "abis is aphraseg to  testing."));
 
     string_destroy(test_str);
     string_destroy(test_str2);
