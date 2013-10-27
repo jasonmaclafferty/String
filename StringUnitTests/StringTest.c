@@ -618,16 +618,16 @@ void test_string_set_range(void)
     string_set_range(test_str, "A", -1, 5); /* Indexes cannot be negative. */
     assert(string_equal_cstring(test_str, "This is aphraseg for testing."));
 
-    string_set_range(test_str, "an expression", 5, 0); /* The start index must be less than the end index. */
+    string_set_range(test_str, "an expression", 5, 0); /* The start index cannot be greater than the end index. */
     assert(string_equal_cstring(test_str, "This is aphraseg for testing."));
 
-    string_set_range(test_str, "something here", 0, 0); /* " */
-    assert(string_equal_cstring(test_str, "This is aphraseg for testing."));
+    string_set_range(test_str, "something here", 0, 0);
+    assert(string_equal_cstring(test_str, "shis is aphraseg for testing."));
 
     /* If strlen(replacement string) > (end index - start index) + 1 then only (end index - start index)
     + 1 characters are replaced in the destination string. */
     string_set_range(test_str, "to use for", 17, 19);
-    assert(string_equal_cstring(test_str, "This is aphraseg to  testing."));
+    assert(string_equal_cstring(test_str, "shis is aphraseg to  testing."));
 
     /* If strlen(replacement string) <= (end index - start index) + 1, then only len(replacement string) number of
     characters will be replaced in the destination string. */
@@ -656,14 +656,14 @@ void test_string_replace(void)
 
     string_replace(NULL, NULL, NULL); /* This should neither do anything nor crash. */
 
-    string_replace(test_str2, "the", "and"); /* try a zero-lengthed string */
+    string_replace(test_str2, "the", "and"); /* try a zero-lengthened string */
     assert(string_equal_cstring(test_str2, ""));
 
     string_replace(test_str2, "", ""); /* calling string_replace with all empty strings should do absolutely nothing. */
     assert(string_equal_cstring(test_str2, ""));
 
     string_replace(test_str, "This", "A");
-    assert(string_equal_cstring(test_str, "A is a string expression for unit testing."));
+    assert(string_equal_cstring(test_str, "A is a string expression for unit testing.")); /* farthest passing test */
 
     string_replace(test_str, "unit", "function");
     assert(string_equal_cstring(test_str, "A is a string expression for function testing."));

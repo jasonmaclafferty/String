@@ -11,6 +11,8 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="3" />
 				<Option compiler="gcc" />
+				<Option host_application="/home/Jason/Github/C/String/StringUnitTests/bin/Debug/StringUnitTests" />
+				<Option run_host_application_in_terminal="1" />
 				<Option createDefFile="1" />
 				<Option createStaticLib="1" />
 				<Compiler>
@@ -50,7 +52,6 @@
 			<Add option="-Wextra" />
 			<Add option="-Wall" />
 			<Add option="-g" />
-			<Add option="-W" />
 		</Compiler>
 		<Unit filename="String.c">
 			<Option compilerVar="CC" />

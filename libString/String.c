@@ -615,7 +615,7 @@ string_t* string_scan_s(void)
     return stdin_data;
 }
 
-/** \brief Reads in all the characters from the standard input stream and returns them a new string object.
+/** \brief Reads in all the characters from the standard input stream and returns them as new string object.
  *
  * \param dest string_t* A pointer the string object to store the input in.
  * \return void Nothing.
@@ -964,25 +964,32 @@ int string_find(string_t* str_to_search, string_t* str_to_find, int search_strt_
  * strlen(replacement_str) number of characters are overwritten.
  */
 void string_set_range(string_t* dest, char* replacement_str, int start_pos, int end_pos)
-{
+{/* add one-character replace test for this function */
     int dest_pos, replacement_str_pos, count_to_write;
 
     if (dest != NULL && replacement_str != NULL)
     {
         if (start_pos >= 0 && start_pos < dest->length - 1)
         {
-            if (end_pos > 0 && end_pos < dest->length)
+            if (end_pos < dest->length)
             {
-                if (start_pos < end_pos)
+                if (end_pos > 0)
                 {
-                    if ((int)strlen(replacement_str) > (end_pos - start_pos) + 1)
-                        count_to_write = (end_pos - start_pos) + 1;
-                    else
-                        count_to_write = (int)strlen(replacement_str);
+                    if (start_pos < end_pos)
+                    {
+                        if ((int)strlen(replacement_str) > (end_pos - start_pos) + 1)
+                            count_to_write = (end_pos - start_pos) + 1;
+                        else
+                            count_to_write = (int)strlen(replacement_str);
 
-                    for (dest_pos = start_pos, replacement_str_pos = 0; replacement_str_pos < count_to_write;
-                         dest_pos++, replacement_str_pos++)
-                            dest->char_array[dest_pos] = replacement_str[replacement_str_pos];
+                        for (dest_pos = start_pos, replacement_str_pos = 0; replacement_str_pos < count_to_write;
+                            dest_pos++, replacement_str_pos++)
+                                dest->char_array[dest_pos] = replacement_str[replacement_str_pos];
+                    }
+                }
+                else if (end_pos >= 0 && start_pos == end_pos)
+                {
+                    dest->char_array[start_pos] = replacement_str[0];
                 }
             }
         }
@@ -1008,7 +1015,7 @@ void string_set_range2(string_t* dest, string_t* replacement_str, int start_pos,
     string_set_range(dest, replacement_str->char_array, start_pos, end_pos);
 }
 
-/** \brief Replaces the first occurrence of str_to_replace with replacement_text in the string object dest.
+/** \brief Replaces the first occurrence of str_to_replace with replacement_text in the string object pointed to by dest.
  *
  * \param dest string_t* A pointer to the string object in which to do the replacements.
  * \param str_to_replace char* The C string to replace in the string object pointed to by dest.
@@ -1029,6 +1036,8 @@ int string_replace(string_t* dest, char* str_to_replace, char* replacement_text)
         if (dest->length > 0 && strlen(str_to_replace) > 0 && strlen(replacement_text) > 0)
         {
             found_at_pos = string_find_cstr(dest, str_to_replace, search_strt_pos);
+            search_strt_pos = found_at_pos + 1;
+
             if (found_at_pos > -1)
             {
                 if (strlen(replacement_text) > strlen(str_to_replace))
@@ -1039,10 +1048,12 @@ int string_replace(string_t* dest, char* str_to_replace, char* replacement_text)
                         temp = (char*)realloc(dest->char_array, dest->capacity + size_diff + 50);
                         if (temp != NULL)
                         {
+                            dest->char_array = temp;
                             /* make room to insert the longer phrase */
-                            for (dest_pos = dest->length - 1; dest_pos > found_at_pos + (int)strlen(str_to_replace) + 1; dest_pos--)
+                            for (dest_pos = dest->length - 1; dest_pos > found_at_pos + (int)strlen(str_to_replace) - 1; dest_pos--)
                                 dest->char_array[dest_pos + size_diff] = dest->char_array[dest_pos];
 
+                            dest->length += size_diff;
                             string_set_range(dest, replacement_text, found_at_pos, strlen(replacement_text) - 1);
                             bool_replaced = 1;
                         }
@@ -1050,9 +1061,11 @@ int string_replace(string_t* dest, char* str_to_replace, char* replacement_text)
                     else
                     {
                         /* make room to insert the longer phrase */
-                        for (dest_pos = dest->length - 1; dest_pos > found_at_pos + (int)strlen(str_to_replace) + 1; dest_pos--)
+                        /* problem right here */
+                        for (dest_pos = dest->length - 1; dest_pos > found_at_pos + (int)strlen(str_to_replace) - 1; dest_pos--)
                             dest->char_array[dest_pos + size_diff] = dest->char_array[dest_pos];
 
+                        dest->length += size_diff;
                         string_set_range(dest, replacement_text, found_at_pos, strlen(replacement_text) - 1);
                         bool_replaced = 1;
                     }
@@ -1065,6 +1078,7 @@ int string_replace(string_t* dest, char* str_to_replace, char* replacement_text)
                     for (dest_pos = found_at_pos + strlen(replacement_text); dest_pos < dest->length - 1; dest_pos++)
                         dest->char_array[dest_pos] = dest->char_array[dest_pos + size_diff];
 
+                    dest->length -= size_diff;
                     string_set_range(dest, replacement_text, found_at_pos, strlen(replacement_text) - 1);
                     bool_replaced = 1;
                 }

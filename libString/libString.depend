@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1381642530 source:/home/Jason/Github/C/String/libString/String.c
+1382853947 source:/home/Jason/Github/C/String/libString/String.c
 	<stdlib.h>
 	<string.h>
 	<stdio.h>
