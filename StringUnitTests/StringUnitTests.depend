@@ -18,3 +18,22 @@
 	"StringTest.h"
 	"String.h"
 
+1384916220 source:g:\softdev\c\string\stringunittests\main.c
+	<stdio.h>
+	<stdlib.h>
+	"StringTest.h"
+	"String.h"
+
+1384916220 g:\softdev\c\string\stringunittests\stringtest.h
+
+1384916220 g:\softdev\c\string\stringunittests\string.h
+	<stdio.h>
+
+1387090510 source:g:\softdev\c\string\stringunittests\stringtest.c
+	<stdio.h>
+	<stdlib.h>
+	<assert.h>
+	<string.h>
+	"StringTest.h"
+	"String.h"
+

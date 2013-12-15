@@ -9,3 +9,13 @@
 1379886462 /home/Jason/Github/C/String/libString/String.h
 	<stdio.h>
 
+1387083472 source:g:\softdev\c\string\libstring\string.c
+	<stdlib.h>
+	<string.h>
+	<stdio.h>
+	<math.h>
+	"String.h"
+
+1384916220 g:\softdev\c\string\libstring\string.h
+	<stdio.h>
+

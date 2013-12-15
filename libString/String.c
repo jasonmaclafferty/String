@@ -219,17 +219,16 @@ void string_copy_cptr_sptr(string_t* dest, const char* source)
                 }
             }
 
-
             if (dest->capacity >= (int)(strlen(source)) + 1)
             {
                 dest->length = 0;
                 for (source_pos = 0; source_pos < (int)(strlen(source)); source_pos++)
                 {
-                    (dest->char_array)[source_pos] = source[source_pos];
+                    dest->char_array[source_pos] = source[source_pos];
                     dest->length++;
                 }
 
-                (dest->char_array)[source_pos+1] = '\0'; /* mark the end of the string with a null character */
+                dest->char_array[source_pos + 1] = '\0'; /* mark the end of the string with a null character */
             }
         }
     }
@@ -265,9 +264,9 @@ void string_concat(string_t* str1, const string_t* str2)
 
             if (str1->capacity >= str1->length + str2->length + 2)
             {
-                for (str1_pos = str1->length, str2_pos = 0u; str2_pos < str2->length; str1_pos++, str2_pos++)
+                for (str1_pos = str1->length, str2_pos = 0; str2_pos < str2->length; str1_pos++, str2_pos++)
                 {
-                    (str1->char_array)[str1_pos] = (str2->char_array)[str2_pos];
+                    str1->char_array[str1_pos] = str2->char_array[str2_pos];
                     str1->length++;
                 }
 
@@ -969,28 +968,22 @@ void string_set_range(string_t* dest, char* replacement_str, int start_pos, int 
 
     if (dest != NULL && replacement_str != NULL)
     {
-        if (start_pos >= 0 && start_pos < dest->length - 1)
+        if (start_pos >= 0 && start_pos < dest->length && end_pos >= 0 && end_pos < dest->length)
         {
-            if (end_pos < dest->length)
+            if (start_pos < end_pos)
             {
-                if (end_pos > 0)
-                {
-                    if (start_pos < end_pos)
-                    {
-                        if ((int)strlen(replacement_str) > (end_pos - start_pos) + 1)
-                            count_to_write = (end_pos - start_pos) + 1;
-                        else
-                            count_to_write = (int)strlen(replacement_str);
+                if ((int)strlen(replacement_str) > (end_pos - start_pos) + 1)
+                    count_to_write = (end_pos - start_pos) + 1;
+                else
+                    count_to_write = (int)strlen(replacement_str);
 
-                        for (dest_pos = start_pos, replacement_str_pos = 0; replacement_str_pos < count_to_write;
-                            dest_pos++, replacement_str_pos++)
-                                dest->char_array[dest_pos] = replacement_str[replacement_str_pos];
-                    }
-                }
-                else if (end_pos >= 0 && start_pos == end_pos)
-                {
-                    dest->char_array[start_pos] = replacement_str[0];
-                }
+                for (dest_pos = start_pos, replacement_str_pos = 0; replacement_str_pos < count_to_write;
+                    dest_pos++, replacement_str_pos++)
+                        dest->char_array[dest_pos] = replacement_str[replacement_str_pos];
+            }
+            else if (start_pos == end_pos)
+            {
+                dest->char_array[start_pos] = replacement_str[0];
             }
         }
     }
@@ -1027,9 +1020,11 @@ void string_set_range2(string_t* dest, string_t* replacement_str, int start_pos,
  */
 int string_replace(string_t* dest, char* str_to_replace, char* replacement_text)
 {
-    static int search_strt_pos = 0;
-    int bool_replaced = 0, dest_pos, found_at_pos, size_diff;
-    char* temp;
+    static int search_strt_pos      =       0;
+    int bool_replaced               =       0;
+    int size_diff                   =       (int)(fabs((double)(strlen(str_to_replace) - strlen(replacement_text))));
+    char* temp                      =       NULL;
+    int dest_pos, found_at_pos, replacement_end_pos;
 
     if (dest != NULL && str_to_replace != NULL && replacement_text != NULL)
     {
@@ -1039,53 +1034,46 @@ int string_replace(string_t* dest, char* str_to_replace, char* replacement_text)
             search_strt_pos = found_at_pos + 1;
 
             if (found_at_pos > -1)
+
             {
                 if (strlen(replacement_text) > strlen(str_to_replace))
                 {
-                    size_diff = (int)(strlen(replacement_text) - strlen(str_to_replace));
                     if (dest->length + size_diff > dest->capacity)
                     {
                         temp = (char*)realloc(dest->char_array, dest->capacity + size_diff + 50);
-                        if (temp != NULL)
-                        {
-                            dest->char_array = temp;
-                            /* make room to insert the longer phrase */
-                            for (dest_pos = dest->length - 1; dest_pos > found_at_pos + (int)strlen(str_to_replace) - 1; dest_pos--)
-                                dest->char_array[dest_pos + size_diff] = dest->char_array[dest_pos];
-
-                            dest->length += size_diff;
-                            string_set_range(dest, replacement_text, found_at_pos, strlen(replacement_text) - 1);
-                            bool_replaced = 1;
-                        }
                     }
-                    else
+
+                    if (temp != NULL || dest->length + size_diff <= dest->capacity)
                     {
+                        if (temp != NULL)
+                            dest->capacity = dest->capacity + size_diff + 50;
+
                         /* make room to insert the longer phrase */
-                        /* problem right here */
                         for (dest_pos = dest->length - 1; dest_pos > found_at_pos + (int)strlen(str_to_replace) - 1; dest_pos--)
                             dest->char_array[dest_pos + size_diff] = dest->char_array[dest_pos];
 
-                        dest->length += size_diff;
-                        string_set_range(dest, replacement_text, found_at_pos, strlen(replacement_text) - 1);
-                        bool_replaced = 1;
+                        dest->length            +=      size_diff;
+                        replacement_end_pos     =       found_at_pos + strlen(replacement_text) - 1;
+                        string_set_range(dest, replacement_text, found_at_pos, replacement_end_pos);
+                        bool_replaced           =       1;
                     }
                 }
                 else if (strlen(replacement_text) < strlen(str_to_replace))
                 {
-                    size_diff = (int)(strlen(str_to_replace) - strlen(replacement_text));
-
                     /* remove unneeded characters */
                     for (dest_pos = found_at_pos + strlen(replacement_text); dest_pos < dest->length - 1; dest_pos++)
                         dest->char_array[dest_pos] = dest->char_array[dest_pos + size_diff];
 
-                    dest->length -= size_diff;
-                    string_set_range(dest, replacement_text, found_at_pos, strlen(replacement_text) - 1);
-                    bool_replaced = 1;
+                    dest->length            -=      size_diff;
+                    replacement_end_pos     =       found_at_pos + strlen(replacement_text) - 1;
+                    string_set_range(dest, replacement_text, found_at_pos, replacement_end_pos);
+                    bool_replaced           =       1;
                 }
                 else
                 {
-                    string_set_range(dest, replacement_text, found_at_pos, strlen(replacement_text) - 1);
-                    bool_replaced = 1;
+                    replacement_end_pos     =       found_at_pos + strlen(replacement_text) - 1;
+                    string_set_range(dest, replacement_text, found_at_pos, replacement_end_pos);
+                    bool_replaced           =       1;
                 }
             }
         }

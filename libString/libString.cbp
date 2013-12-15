@@ -2,19 +2,17 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="String" />
+		<Option title="libString" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="bin/Debug/String" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Debug/libString.so" prefix_auto="1" extension_auto="0" />
 				<Option object_output="obj/Debug/" />
 				<Option type="3" />
 				<Option compiler="gcc" />
 				<Option host_application="/home/Jason/Github/C/String/StringUnitTests/bin/Debug/StringUnitTests" />
 				<Option run_host_application_in_terminal="1" />
-				<Option createDefFile="1" />
-				<Option createStaticLib="1" />
 				<Compiler>
 					<Add option="-pedantic-errors" />
 					<Add option="-pedantic" />
@@ -26,20 +24,61 @@
 				</Compiler>
 			</Target>
 			<Target title="Release">
-				<Option output="bin/Release/String" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Release/libString.so" prefix_auto="1" extension_auto="0" />
 				<Option object_output="obj/Release/" />
 				<Option type="3" />
 				<Option compiler="gcc" />
-				<Option createDefFile="1" />
-				<Option createStaticLib="1" />
 				<Compiler>
+					<Add option="-Os" />
+					<Add option="-O3" />
 					<Add option="-O2" />
+					<Add option="-O1" />
+					<Add option="-O" />
 					<Add option="-pedantic-errors" />
 					<Add option="-pedantic" />
 					<Add option="-Wfatal-errors" />
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
 					<Add option="-o libString.so -fPIC" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+			<Target title="WinDebug">
+				<Option platforms="Windows;" />
+				<Option output="bin/Debug/libString.dll" imp_lib="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).def" prefix_auto="1" extension_auto="0" />
+				<Option object_output="obj/Debug/" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option host_application="G:/SoftDev/C/String/StringUnitTests/bin/Debug/StringUnitTests.exe" />
+				<Option run_host_application_in_terminal="1" />
+				<Compiler>
+					<Add option="-pedantic-errors" />
+					<Add option="-pedantic" />
+					<Add option="-Wfatal-errors" />
+					<Add option="-Wextra" />
+					<Add option="-Wall" />
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="WinRelease">
+				<Option platforms="Windows;" />
+				<Option output="bin/Release/libString.dll" imp_lib="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).def" prefix_auto="1" extension_auto="0" />
+				<Option object_output="obj/Release" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-Os" />
+					<Add option="-O3" />
+					<Add option="-O2" />
+					<Add option="-O1" />
+					<Add option="-O" />
+					<Add option="-pedantic-errors" />
+					<Add option="-pedantic" />
+					<Add option="-Wfatal-errors" />
+					<Add option="-Wextra" />
+					<Add option="-Wall" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />

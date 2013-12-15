@@ -127,7 +127,6 @@ void test_string_copy_cptr_sptr(void) /* whitebox testing is absolutely necessar
     char* test5             =   NULL;
     string_t* test_str6;
 
-
     test_str1 = string_init();
     string_copy_cptr_sptr(test_str1, "Jason is working now!");
     assert(strcmp(test_str1->char_array, "Jason is working now!") == 0);
@@ -140,6 +139,7 @@ void test_string_copy_cptr_sptr(void) /* whitebox testing is absolutely necessar
 
     test_str3 = string_cust_init(30);
     string_copy_cptr_sptr(test_str3, "C is a programming language. A very powerful one. I like it. Do you?");
+    /* CRASH at line 144 */
     assert(strcmp(test_str3->char_array, "C is a programming language. A very powerful one. I like it. Do you?") == 0);
     string_destroy(test_str3);
 
@@ -634,6 +634,13 @@ void test_string_set_range(void)
     string_set_range(test_str, "ab", 0, 15);
     assert(string_equal_cstring(test_str, "abis is aphraseg to  testing."));
 
+    /* a single character in the string object can be set by setting start_pos = end_pos */
+    string_set_range(test_str, "A", 0, 0);
+    assert(string_equal_cstring(test_str, "Abis is aphraseg to  testing."));
+
+    string_set_range(test_str, "X", 19, 19);
+    assert(string_equal_cstring(test_str, "Abis is aphraseg toX testing."));
+
     string_destroy(test_str);
     string_destroy(test_str2);
 }
@@ -663,12 +670,14 @@ void test_string_replace(void)
     assert(string_equal_cstring(test_str2, ""));
 
     string_replace(test_str, "This", "A");
-    assert(string_equal_cstring(test_str, "A is a string expression for unit testing.")); /* farthest passing test */
+    assert(string_equal_cstring(test_str, "A is a string expression for unit testing."));
 
     string_replace(test_str, "unit", "function");
     assert(string_equal_cstring(test_str, "A is a string expression for function testing."));
 
+    /* the following is the currently failing test. */
     while (string_replace(test_str3, "a", "b")); /* replace all occurrences of the letter a in test_str3 */
+    string_print(test_str3, 1);
     assert(string_equal_cstring(test_str3, "b b b b b b b b b b b b b b bb"));
 
     assert(string_replace(test_str3, "ba", "a") == 0);
