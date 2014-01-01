@@ -53,7 +53,7 @@ string_t* string_init(void)
 
 /** \brief Custom initializer for the string data type.
  *
- * \param initial_size Initial length of the string.
+ * \param initial_size int Initial length of the string.
  * \return string_t* A pointer to the new string object.
  *
  * Initializes a new string object to specified initial capacity and returns a pointer to it.
@@ -895,7 +895,7 @@ int string_find_cstr(string_t* str_to_search, char* str_to_find, int search_strt
 
     if (str_to_search != NULL && str_to_find != NULL)
     {
-        if (search_strt_pos >= 0)
+        if (search_strt_pos >= 0 && search_strt_pos < str_to_search->length)
         {
             if (strlen(str_to_find) > 0 && str_to_search->length > 0)
             {
@@ -1020,18 +1020,37 @@ void string_set_range2(string_t* dest, string_t* replacement_str, int start_pos,
  */
 int string_replace(string_t* dest, char* str_to_replace, char* replacement_text)
 {
-    static int search_strt_pos      =       0;
-    int bool_replaced               =       0;
-    int size_diff                   =       (int)(fabs((double)(strlen(str_to_replace) - strlen(replacement_text))));
-    char* temp                      =       NULL;
+    static int search_strt_pos              =       0;
+    int bool_replaced                       =       0;
+    int size_diff                           =       0; 
+    char* temp                              =       NULL;
+    static string_t* old_dest               =       NULL;
+    static char* old_str_to_replace         =       NULL;
+    static char* old_replacement_text       =       NULL;
     int dest_pos, found_at_pos, replacement_end_pos;
+
+    if (old_dest == NULL && old_str_to_replace == NULL && old_replacement_text == NULL)
+    {
+        old_dest                    =       dest;
+        old_replacement_text        =       replacement_text;
+        old_str_to_replace          =       str_to_replace;
+    }
 
     if (dest != NULL && str_to_replace != NULL && replacement_text != NULL)
     {
         if (dest->length > 0 && strlen(str_to_replace) > 0 && strlen(replacement_text) > 0)
         {
-            found_at_pos = string_find_cstr(dest, str_to_replace, search_strt_pos);
-            search_strt_pos = found_at_pos + 1;
+            if (dest != old_dest || str_to_replace != old_str_to_replace || replacement_text != old_replacement_text)
+            {
+                search_strt_pos             =       0;
+                old_dest                    =       dest;
+                old_replacement_text        =       replacement_text;
+                old_str_to_replace          =       str_to_replace;
+            }
+
+            size_diff           =       (int)(fabs((double)((int)strlen(str_to_replace) - (int)strlen(replacement_text))));
+            found_at_pos        =       string_find_cstr(dest, str_to_replace, search_strt_pos);
+            search_strt_pos     =       found_at_pos + 1;
 
             if (found_at_pos > -1)
 

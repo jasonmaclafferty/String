@@ -677,7 +677,6 @@ void test_string_replace(void)
 
     /* the following is the currently failing test. */
     while (string_replace(test_str3, "a", "b")); /* replace all occurrences of the letter a in test_str3 */
-    string_print(test_str3, 1);
     assert(string_equal_cstring(test_str3, "b b b b b b b b b b b b b b bb"));
 
     assert(string_replace(test_str3, "ba", "a") == 0);

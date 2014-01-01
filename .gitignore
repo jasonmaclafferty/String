@@ -5,6 +5,8 @@ libString/obj/Debug/
 libString/obj/Release/
 StringUnitTests/bin/Debug/*
 StringUnitTests/obj/Debug/
+libString/*.so
+StringUnitTests/StringUnitTests
 
 # ignore backup files
 *.bak
