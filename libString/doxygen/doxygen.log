@@ -1,0 +1,4 @@
+/home/jason/SoftDev/C/String/libString/String.h:11: Warning: Compound string_t is not documented.
+/home/jason/SoftDev/C/String/libString/String.h:12: Warning: Member char_array (variable) of class string_t is not documented.
+/home/jason/SoftDev/C/String/libString/String.h:13: Warning: Member length (variable) of class string_t is not documented.
+/home/jason/SoftDev/C/String/libString/String.h:14: Warning: Member capacity (variable) of class string_t is not documented.

@@ -12,3 +12,4 @@ StringUnitTests/StringUnitTests
 *.bak
 *.save
 *.swp
+*.*~
